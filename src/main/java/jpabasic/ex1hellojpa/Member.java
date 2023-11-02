@@ -5,9 +5,9 @@ import com.sun.istack.Nullable;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
+@Entity(name = "asd")
 public class Member {
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "name", nullable = false)
     private String username;
