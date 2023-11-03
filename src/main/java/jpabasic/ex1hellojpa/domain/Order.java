@@ -19,7 +19,7 @@ public class Order {
     private OrderStatus status;
 
 
-    public Long getId() {  
+    public Long getId() {
         return id;
     }
 
