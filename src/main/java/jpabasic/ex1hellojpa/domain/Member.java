@@ -6,13 +6,16 @@ import java.util.List;
 
 @Entity
 
-public class Member {
+public class Member extends BaseEntity{
     @Id @GeneratedValue
     @Column(name = "member_id")
     private Long id;
 
     @Column(name = "username")
     private String name;
+
+    @ManyToOne
+    private Team team;
     private String city;
     private String street;
     private String zipcode;
