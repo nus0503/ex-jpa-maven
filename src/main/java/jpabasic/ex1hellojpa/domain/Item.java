@@ -3,9 +3,10 @@ package jpabasic.ex1hellojpa.domain;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn
 @Entity
-public class Item {
+public abstract class Item extends BaseEntity{
 
     @Id @GeneratedValue
     @Column(name = "ITEM_ID")
@@ -27,6 +28,7 @@ public class Item {
     public void setId(Long id) {
         this.id = id;
     }
+
 
     public String getName() {
         return name;
