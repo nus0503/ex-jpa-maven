@@ -1,6 +1,5 @@
 package jpabasic.ex1hellojpa;
 
-import jpabasic.ex1hellojpa.domain.Member;
 import jpabasic.ex1hellojpa.domain.Order;
 import jpabasic.ex1hellojpa.domain.OrderItem;
 import jpabasic.ex1hellojpa.domain.Team;
@@ -24,12 +23,24 @@ public class JpaMain {
         tx.begin();
 
         try {
+            Member member1 = new Member();
+            member1.setUsername("member1");
+            em.persist(member1);
 
+            em.flush();
+            em.clear();
 
+            Member reference = em.getReference(Member.class, member1.getId());
+            System.out.println("reference = " + reference.getClass()); //getClass()미포함
+
+            em.detach(reference); // 예외발생X
+
+            System.out.println(reference.getUsername());
 
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
+            e.printStackTrace();
         }finally {
             em.close();
         }
