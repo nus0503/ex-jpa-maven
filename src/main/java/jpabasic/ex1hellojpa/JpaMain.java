@@ -1,14 +1,13 @@
 package jpabasic.ex1hellojpa;
 
-import jpabasic.ex1hellojpa.domain.Order;
-import jpabasic.ex1hellojpa.domain.OrderItem;
+import jpabasic.ex1hellojpa.domain.Member;
 import jpabasic.ex1hellojpa.domain.Team;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.util.List;
+
 
 public class JpaMain {
 
@@ -23,19 +22,29 @@ public class JpaMain {
         tx.begin();
 
         try {
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
+
+
             Member member1 = new Member();
-            member1.setUsername("member1");
+            member1.setName("member1");
+            member1.setTeam(team);
             em.persist(member1);
+
+
+
+
 
             em.flush();
             em.clear();
 
-            Member reference = em.getReference(Member.class, member1.getId());
-            System.out.println("reference = " + reference.getClass()); //getClass()미포함
+            Member m = em.find(Member.class, member1.getId());
+            System.out.println("m = " + m.getTeam().getClass());
 
-            em.detach(reference); // 예외발생X
-
-            System.out.println(reference.getUsername());
+            System.out.println("==================");
+            m.getTeam().getName(); //<-  fetch = FetchType.LAZY일 시 프록시 객체엔 필드의 값들이 없기 때문에 getName()같은 메소드로 값들을 이용하기 위해 동작할 때 초기화가 일어난다.
+            System.out.println("==================");
 
             tx.commit();
         } catch (Exception e) {
