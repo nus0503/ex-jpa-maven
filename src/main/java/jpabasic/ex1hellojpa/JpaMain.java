@@ -4,14 +4,11 @@ import jpabasic.ex1hellojpa.domain.Member;
 import jpabasic.ex1hellojpa.domain.Order;
 import jpabasic.ex1hellojpa.domain.OrderItem;
 import jpabasic.ex1hellojpa.domain.Team;
-import jpabasic.ex1hellojpa.ex.Item;
-import jpabasic.ex1hellojpa.ex.Movie;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class JpaMain {
@@ -28,14 +25,7 @@ public class JpaMain {
 
         try {
 
-            Member member = new Member();
-            member.setName("user1");
-            member.setCreatedBy("kim");
-            member.setCreatedDate(LocalDateTime.now());
-            em.persist(member);
 
-            em.flush();
-            em.clear();
 
             tx.commit();
         } catch (Exception e) {
