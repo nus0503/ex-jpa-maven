@@ -9,6 +9,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.List;
+import java.util.Set;
 
 
 public class JpaMain {
@@ -35,6 +36,18 @@ public class JpaMain {
             member.getAddressHistory().add(new Address("old1", "street", "10000"));
             member.getAddressHistory().add(new Address("old2", "street", "10000"));
             em.persist(member);
+
+            em.flush();
+            em.clear();
+            System.out.println("====================start==================");
+            Member findMember = em.find(Member.class, member.getId()); // select하면 member 테이블에 있는 컬럼만 가져온다. 즉 favoriteFoods필드나 addressHistory필드 같은
+            // 컬렉션들은 다 지연로딩이다.
+
+            List<Address> addressHistory = findMember.getAddressHistory();
+            addressHistory.forEach(e -> System.out.println(e.getCity()));
+
+            Set<String> favoriteFoods = findMember.getFavoriteFoods();
+            favoriteFoods.forEach(e -> System.out.println(e));
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
