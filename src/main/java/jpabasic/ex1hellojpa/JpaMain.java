@@ -1,5 +1,6 @@
 package jpabasic.ex1hellojpa;
 
+import jpabasic.ex1hellojpa.domain.Address;
 import jpabasic.ex1hellojpa.domain.Member;
 import jpabasic.ex1hellojpa.domain.Team;
 
@@ -23,32 +24,17 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Team team = new Team();
-            team.setName("teamA");
-            em.persist(team);
-            Team team2 = new Team();
-            team2.setName("teamB");
-            em.persist(team2);
+            Member member = new Member();
+            member.setName("member1");
+            member.setHomeAddress(new Address("city1", "street", "10000"));
 
-            Member member1 = new Member();
-            member1.setName("member1");
-            member1.setTeam(team);
-            em.persist(member1);
-            Member member2 = new Member();
-            member2.setName("member2");
-            member2.setTeam(team2);
-            em.persist(member2);
+            member.getFavoriteFoods().add("치킨");
+            member.getFavoriteFoods().add("족발");
+            member.getFavoriteFoods().add("피자");
 
-
-
-
-            em.flush();
-            em.clear();
-
-            List<Member> members = em.createQuery("select m from Member m", Member.class).getResultList(); // 즉시로딩 했을 때 JPQL에서의 N + 1문제
-            // 이 로직은 모든 멤버를 가지고 오는 로직이다. 근데 만약 멤버 테이블에 2개의 row가 있다면 일단 member 쿼리는 한번만 나간다.
-            // 하지만 member필드엔 team도 있기에 각각의 row의 해당하는 team을 찾기 위해 쿼리가 실행된다. 이 과정에선 member 쿼리 1번, team 쿼리 2번이 나간다.
-
+            member.getAddressHistory().add(new Address("old1", "street", "10000"));
+            member.getAddressHistory().add(new Address("old2", "street", "10000"));
+            em.persist(member);
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
