@@ -22,14 +22,18 @@ public class Member extends BaseEntity{
     @Embedded
     private Address homeAddress;
 
-    @ElementCollection
+    @ElementCollection // (@ElementCollection, @CollectionTable) 값 타입을 하나 이상 저장할 때 사용한다.
+    // DB에는 컬렉션을 같은 테이블에 저장할 순 없다. 그래서 컬렉션을 저장하기 위해서 별도의 테이블이 필요함
     @CollectionTable(name = "favorite_food", joinColumns = @JoinColumn(name = "member_id"))
     @Column(name = "food_name")
     private Set<String> favoriteFoods = new HashSet<>();
 
-    @ElementCollection
-    @CollectionTable(name = "address", joinColumns = @JoinColumn(name = "member_id"))
-    private List<Address> addressHistory = new ArrayList<>();
+    //    @ElementCollection
+//    @CollectionTable(name = "address", joinColumns = @JoinColumn(name = "member_id"))
+//    private List<Address> addressHistory = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "member_id")
+    private List<AddressEntity> addressHistory = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
@@ -83,11 +87,11 @@ public class Member extends BaseEntity{
         this.favoriteFoods = favoriteFoods;
     }
 
-    public List<Address> getAddressHistory() {
+    public List<AddressEntity> getAddressHistory() {
         return addressHistory;
     }
 
-    public void setAddressHistory(List<Address> addressHistory) {
+    public void setAddressHistory(List<AddressEntity> addressHistory) {
         this.addressHistory = addressHistory;
     }
 }
